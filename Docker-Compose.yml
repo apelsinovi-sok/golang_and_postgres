@@ -1,0 +1,28 @@
+services:
+  base:
+    image: postgres:13.3
+    restart: always
+    container_name: web-postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5432:5432"
+    networks:
+      - net
+
+  server:
+    depends_on:
+      - base
+    build: ./Server
+    container_name: web-server
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
